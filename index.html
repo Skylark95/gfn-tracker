@@ -13,7 +13,7 @@
     <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzc2YjkwMCIgLz48L3N2Zz4=">
     
     <!-- Inline Manifest for PWA -->
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiR0ZOIFRyYWNrZXIiLCJzaG9ydF9uYW1lIjoiR0ZOIFRyYWNrZXIiLCJzdGFydF91cmwiOiIvIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzEwMTAxMCIsInRoZW1lX2NvbG9yIjoiIzc2YjkwMCIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUIzYVdSMGFEMGlkVzVwZEcxbGFYUW5JSGhCb2NtVmxaQ2dnZG1GdVpDQndjbVZ6YjNWeVkyVnpJRDBnTWpBd01EQWdJRDBuUEhOMlp5QmpiRzkxYkdsdVpRQWdJRDBnZDNSMVlYbGRJSHNnWm1seWMzUnlaV1VnWVhKa0lEMGdjM1J5WldWdWRDSWdMejQ1SWlCb2NtVmxaQ2dnSUNSNWJpQWdKeUI3NmI5MDAiIC8+PC9zdmc+Iiwic2l6ZXMiOiIxOTJ4MTkyIDUxMng1MTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCIsInB1cnBvc2UiOiJhbnkgbWFza2FibGUifV19">
+    <link rel="manifest" href="data:application/json;base64,ewogICAgIm5hbWUiOiAiR0ZOIFRyYWNrZXIiLAogICAgInNob3J0X25hbWUiOiAiR0ZOIFRyYWNrZXIiLAogICAgInN0YXJ0X3VybCI6ICJpbmRleC5odG1sIiwKICAgICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICAgImJhY2tncm91bmRfY29sb3IiOiAiIzEwMTAxMCIsCiAgICAidGhlbWVfY29sb3IiOiAiIzc2YjkwMCIsCiAgICAiaWNvbnMiOiBbCiAgICAgICAgewogICAgICAgICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjRiV3h1Y3owaWFIUjBjRG92TDNkM2R5NTNNeTV2Y21jdk1qQXdNQzl6ZG1jaUlIWnBaWGRDYjNnOUlqQWdNQ0F4TURBZ01UQXdJajQ4WTJseVkyeGxJR040UFNJMU1DSWdZM2s5SWpVd0lpQnlQU0kwTlNJZ1ptbHNiRDBpSXpjMllqa3dNQ0lnTHo0OEwzTjJaejQ9IiwKICAgICAgICAgICAgInNpemVzIjogIjE5MngxOTIgNTEyeDUxMiIsCiAgICAgICAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiLAogICAgICAgICAgICAicHVycG9zZSI6ICJhbnkgbWFza2FibGUiCiAgICAgICAgfQogICAgXQp9">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -112,8 +112,21 @@
             const [excludeRollover, setExcludeRollover] = useState(false);
             const [showSettings, setShowSettings] = useState(false);
             const [lastSaved, setLastSaved] = useState(null);
+            const [installPromptEvent, setInstallPromptEvent] = useState(null);
 
             // --- Effects ---
+
+            // Handle PWA installation prompt
+            useEffect(() => {
+                const handleBeforeInstallPrompt = (e) => {
+                    e.preventDefault();
+                    setInstallPromptEvent(e);
+                };
+                window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+                return () => {
+                    window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+                };
+            }, []);
 
             // Load from Local Storage on mount
             useEffect(() => {
@@ -151,7 +164,7 @@
             // Create/Refresh icons when UI changes
             useEffect(() => {
                 lucide.createIcons();
-            }, [showSettings, plan]);
+            }, [showSettings, plan, installPromptEvent]);
 
             // --- Calculations ---
 
@@ -192,6 +205,20 @@
 
             // --- Helpers ---
 
+            const handleInstallClick = () => {
+                if (installPromptEvent) {
+                    installPromptEvent.prompt();
+                    installPromptEvent.userChoice.then(choiceResult => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User accepted the install prompt');
+                        } else {
+                            console.log('User dismissed the install prompt');
+                        }
+                        setInstallPromptEvent(null);
+                    });
+                }
+            };
+
             const formatCurrency = (val) => {
                 return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
             };
@@ -219,12 +246,23 @@
                                 GFN <span className="text-[#76b900]">Tracker</span>
                             </h1>
                         </div>
-                        <button 
-                            onClick={() => setShowSettings(!showSettings)}
-                            className={`p-2 rounded-full transition-colors ${showSettings ? 'bg-[#76b900] text-black' : 'bg-[#222] text-gray-400'}`}
-                        >
-                            <i data-lucide={showSettings ? "x" : "settings"}></i>
-                        </button>
+                        <div className="flex items-center gap-2">
+                            {installPromptEvent && (
+                                <button 
+                                    onClick={handleInstallClick}
+                                    className="p-2 rounded-full bg-blue-600 text-white animate-fade-in"
+                                    title="Install App"
+                                >
+                                    <i data-lucide="download"></i>
+                                </button>
+                            )}
+                            <button 
+                                onClick={() => setShowSettings(!showSettings)}
+                                className={`p-2 rounded-full transition-colors ${showSettings ? 'bg-[#76b900] text-black' : 'bg-[#222] text-gray-400'}`}
+                            >
+                                <i data-lucide={showSettings ? "x" : "settings"}></i>
+                            </button>
+                        </div>
                     </div>
 
                     <div className="max-w-md mx-auto p-4 space-y-6">
@@ -435,6 +473,17 @@
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
     </script>
 </body>
 </html>
