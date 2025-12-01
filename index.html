@@ -10,10 +10,10 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="GFN Tracker">
-    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkPvO/HgAFdAJ05Zg6OAAAAABJRU5ErkJggg==">
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzc2YjkwMCIgLz48L3N2Zz4=">
     
     <!-- Inline Manifest for PWA -->
-    <link rel="manifest" href='data:application/json;base64,ewogICJuYW1lIjogIkdGTiBUcmFja2VyIiwKICAic2hvcnRfbmFtZSI6ICJHRk4gVHJhY2tlciIsCiAgInN0YXJ0X3VybCI6ICIvIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMTAxMDEwIiwKICAidGhlbWVfY29sb3IiOiAiIzc2YjkwMCIKfQ=='>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiR0ZOIFRyYWNrZXIiLCJzaG9ydF9uYW1lIjoiR0ZOIFRyYWNrZXIiLCJzdGFydF91cmwiOiIvIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzEwMTAxMCIsInRoZW1lX2NvbG9yIjoiIzc2YjkwMCIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUIzYVdSMGFEMGlkVzVwZEcxbGFYUW5JSGhCb2NtVmxaQ2dnZG1GdVpDQndjbVZ6YjNWeVkyVnpJRDBnTWpBd01EQWdJRDBuUEhOMlp5QmpiRzkxYkdsdVpRQWdJRDBnZDNSMVlYbGRJSHNnWm1seWMzUnlaV1VnWVhKa0lEMGdjM1J5WldWdWRDSWdMejQ1SWlCb2NtVmxaQ2dnSUNSNWJpQWdKeUI3NmI5MDAiIC8+PC9zdmc+Iiwic2l6ZXMiOiIxOTJ4MTkyIDUxMng1MTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCIsInB1cnBvc2UiOiJhbnkgbWFza2FibGUifV19">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -78,6 +78,11 @@
     <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
 
+        // --- Constants ---
+        const LOCAL_STORAGE_KEY = 'gfn-tracker-data';
+        const ROLLOVER_HOURS = 15;
+        const TOP_UP_HOURS = 15;
+
         // Pricing Constants (based on late 2024/early 2025 data)
         const PLANS = {
             performance: {
@@ -101,8 +106,7 @@
         const App = () => {
             // --- State ---
             const [plan, setPlan] = useState('performance');
-            const [balanceHours, setBalanceHours] = useState(100);
-            const [balanceMinutes, setBalanceMinutes] = useState(0);
+            const [balance, setBalance] = useState({ hours: 100, minutes: 0 });
             const [renewalDate, setRenewalDate] = useState('');
             const [purchasedBlocks, setPurchasedBlocks] = useState(0);
             const [excludeRollover, setExcludeRollover] = useState(false);
@@ -113,13 +117,15 @@
 
             // Load from Local Storage on mount
             useEffect(() => {
-                const savedData = localStorage.getItem('gfn-tracker-data');
+                const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
                 if (savedData) {
                     try {
                         const parsed = JSON.parse(savedData);
                         setPlan(parsed.plan || 'performance');
-                        setBalanceHours(parsed.balanceHours ?? 100);
-                        setBalanceMinutes(parsed.balanceMinutes ?? 0);
+                        setBalance({
+                            hours: parsed.balance?.hours ?? 100,
+                            minutes: parsed.balance?.minutes ?? 0
+                        });
                         setRenewalDate(parsed.renewalDate || '');
                         setPurchasedBlocks(parsed.purchasedBlocks ?? 0);
                         setExcludeRollover(parsed.excludeRollover ?? false);
@@ -127,29 +133,25 @@
                         console.error("Failed to load data", e);
                     }
                 }
-                
-                // Initialize icons
-                setTimeout(() => lucide.createIcons(), 100);
             }, []);
 
             // Save to Local Storage on change
             useEffect(() => {
                 const data = {
                     plan,
-                    balanceHours,
-                    balanceMinutes,
+                    balance,
                     renewalDate,
                     purchasedBlocks,
                     excludeRollover
                 };
-                localStorage.setItem('gfn-tracker-data', JSON.stringify(data));
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
                 setLastSaved(new Date());
-            }, [plan, balanceHours, balanceMinutes, renewalDate, purchasedBlocks, excludeRollover]);
+            }, [plan, balance, renewalDate, purchasedBlocks, excludeRollover]);
 
-            // Refresh icons when UI changes significantly
+            // Create/Refresh icons when UI changes
             useEffect(() => {
                 lucide.createIcons();
-            }, [plan, showSettings]);
+            }, [showSettings, plan]);
 
             // --- Calculations ---
 
@@ -158,7 +160,6 @@
                 const renewal = renewalDate ? new Date(renewalDate) : null;
                 
                 let daysRemaining = 0;
-                let hoursRemainingToday = 0; // For partial day calc if needed
                 
                 if (renewal && renewal > now) {
                     const diffTime = Math.abs(renewal - now);
@@ -166,13 +167,11 @@
                 }
 
                 // Total current balance in decimal hours
-                let totalCurrentHours = parseFloat(balanceHours) + (parseFloat(balanceMinutes) / 60);
+                let totalCurrentHours = parseFloat(balance.hours) + (parseFloat(balance.minutes) / 60);
                 
                 // Effective Balance (Handle Rollover Exclusion)
-                // If exclude rollover is on, we pretend we have 15 less hours, 
-                // but we don't let it go below 0 for calculation purposes.
                 let effectiveHours = excludeRollover 
-                    ? Math.max(0, totalCurrentHours - 15) 
+                    ? Math.max(0, totalCurrentHours - ROLLOVER_HOURS) 
                     : totalCurrentHours;
 
                 const budgetPerDay = daysRemaining > 0 ? (effectiveHours / daysRemaining) : 0;
@@ -189,7 +188,7 @@
                     totalCost,
                     planDetails: currentPlan
                 };
-            }, [plan, balanceHours, balanceMinutes, renewalDate, purchasedBlocks, excludeRollover]);
+            }, [plan, balance, renewalDate, purchasedBlocks, excludeRollover]);
 
             // --- Helpers ---
 
@@ -201,6 +200,10 @@
                 const h = Math.floor(decimalHours);
                 const m = Math.round((decimalHours - h) * 60);
                 return `${h}h ${m}m`;
+            };
+
+            const handleBalanceChange = (part, value) => {
+                setBalance(prev => ({ ...prev, [part]: value }));
             };
 
             // --- Render ---
@@ -273,7 +276,7 @@
                                     <div className="flex justify-between items-center mb-2">
                                         <label className="text-gray-300">Blocks Purchased</label>
                                         <span className="text-xs text-[#76b900] font-mono bg-[#76b900]/10 px-2 py-1 rounded">
-                                            +15 hrs each
+                                            +{TOP_UP_HOURS} hrs each
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-3">
@@ -313,7 +316,7 @@
                                         <h2 className="text-gray-400 text-sm font-semibold uppercase tracking-wider">Remaining Balance</h2>
                                         <div className="flex flex-col items-end">
                                             <label className="flex items-center gap-2 cursor-pointer group">
-                                                <span className="text-xs text-gray-500 group-hover:text-gray-300 transition-colors">Exclude Rollover (15h)</span>
+                                                <span className="text-xs text-gray-500 group-hover:text-gray-300 transition-colors">Exclude Rollover ({ROLLOVER_HOURS}h)</span>
                                                 <div className="relative">
                                                     <input 
                                                         type="checkbox" 
@@ -334,8 +337,8 @@
                                             <input 
                                                 type="number" 
                                                 min="0"
-                                                value={balanceHours}
-                                                onChange={(e) => setBalanceHours(e.target.value)}
+                                                value={balance.hours}
+                                                onChange={(e) => handleBalanceChange('hours', e.target.value)}
                                                 className="w-full bg-[#0a0a0a] text-3xl sm:text-4xl font-mono font-bold text-white border-b-2 border-[#333] focus:border-[#76b900] focus:outline-none py-2 text-center transition-colors placeholder-gray-700"
                                                 placeholder="00"
                                             />
@@ -347,8 +350,8 @@
                                                 type="number" 
                                                 min="0"
                                                 max="59"
-                                                value={balanceMinutes}
-                                                onChange={(e) => setBalanceMinutes(e.target.value)}
+                                                value={balance.minutes}
+                                                onChange={(e) => handleBalanceChange('minutes', e.target.value)}
                                                 className="w-full bg-[#0a0a0a] text-3xl sm:text-4xl font-mono font-bold text-white border-b-2 border-[#333] focus:border-[#76b900] focus:outline-none py-2 text-center transition-colors placeholder-gray-700"
                                                 placeholder="00"
                                             />
@@ -357,7 +360,7 @@
                                     
                                     {excludeRollover && (
                                         <div className="mt-4 text-center text-xs text-[#76b900] bg-[#76b900]/10 py-1 px-2 rounded border border-[#76b900]/20">
-                                            Safe Mode: 15h hidden from budget
+                                            Safe Mode: {ROLLOVER_HOURS}h hidden from budget
                                         </div>
                                     )}
                                 </div>
