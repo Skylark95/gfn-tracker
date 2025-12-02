@@ -1,4 +1,7 @@
-const { useState, useEffect, useMemo } = React;
+import React, { useState, useEffect, useMemo } from 'react';
+import ReactDOM from 'react-dom/client';
+import { Monitor, Download, Settings, X, CreditCard, ShoppingCart, CalendarClock, DollarSign, Zap, Server } from 'lucide-react';
+import './input.css';
 
 // --- Constants ---
 const LOCAL_STORAGE_KEY = 'gfn-tracker-data';
@@ -83,11 +86,6 @@ const App = () => {
         setLastSaved(new Date());
     }, [plan, balance, renewalDate, purchasedBlocks, excludeRollover]);
 
-    // Create/Refresh icons when UI changes
-    useEffect(() => {
-        lucide.createIcons();
-    }, [showSettings, plan, installPromptEvent]);
-
     // --- Calculations ---
 
     const calculatedData = useMemo(() => {
@@ -163,7 +161,7 @@ const App = () => {
             {/* Header */}
             <div className="sticky top-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#222] p-4 flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                    <i data-lucide="monitor" className="text-[#76b900]"></i>
+                    <Monitor className="text-[#76b900]" />
                     <h1 className="text-xl font-bold tracking-tight text-white">
                         GFN <span className="text-[#76b900]">Tracker</span>
                     </h1>
@@ -175,14 +173,14 @@ const App = () => {
                             className="p-2 rounded-full bg-blue-600 text-white animate-fade-in"
                             title="Install App"
                         >
-                            <i data-lucide="download"></i>
+                            <Download />
                         </button>
                     )}
                     <button 
                         onClick={() => setShowSettings(!showSettings)}
                         className={`p-2 rounded-full transition-colors ${showSettings ? 'bg-[#76b900] text-black' : 'bg-[#222] text-gray-400'}`}
                     >
-                        <i data-lucide={showSettings ? "x" : "settings"}></i>
+                        {showSettings ? <X /> : <Settings />}
                     </button>
                 </div>
             </div>
@@ -194,7 +192,7 @@ const App = () => {
                     <div className="space-y-6 animate-fade-in">
                         <section className="bg-[#151515] p-5 rounded-2xl border border-[#333]">
                             <h2 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-4 flex items-center gap-2">
-                                <i data-lucide="credit-card" size="16"></i> Plan Details
+                                <CreditCard size="16" /> Plan Details
                             </h2>
                             
                             {/* Plan Selector */}
@@ -231,7 +229,7 @@ const App = () => {
 
                         <section className="bg-[#151515] p-5 rounded-2xl border border-[#333]">
                             <h2 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-4 flex items-center gap-2">
-                                <i data-lucide="shopping-cart" size="16"></i> Top-ups
+                                <ShoppingCart /> Top-ups
                             </h2>
                             <div className="flex justify-between items-center mb-2">
                                 <label className="text-gray-300">Blocks Purchased</label>
@@ -332,7 +330,7 @@ const App = () => {
                             <div className="bg-[#151515] p-5 rounded-2xl border border-[#333] flex flex-col justify-between">
                                 <div className="flex justify-between items-start">
                                     <div className="p-2 bg-blue-500/10 rounded-lg text-blue-400">
-                                        <i data-lucide="calendar-clock"></i>
+                                        <CalendarClock />
                                     </div>
                                     <span className="text-xs font-mono text-gray-500">{calculatedData.daysRemaining} days left</span>
                                 </div>
@@ -349,7 +347,7 @@ const App = () => {
                             <div className="bg-[#151515] p-5 rounded-2xl border border-[#333] flex flex-col justify-between">
                                 <div className="flex justify-between items-start">
                                     <div className="p-2 bg-green-500/10 rounded-lg text-[#76b900]">
-                                        <i data-lucide="dollar-sign"></i>
+                                        <DollarSign />
                                     </div>
                                     {purchasedBlocks > 0 && (
                                         <span className="text-xs font-mono text-gray-500">+{purchasedBlocks} blocks</span>
@@ -367,7 +365,7 @@ const App = () => {
                         {/* Plan Summary */}
                         <div className={`p-4 rounded-xl border flex items-center justify-between ${calculatedData.planDetails.bg} ${calculatedData.planDetails.border}`}>
                             <div className="flex items-center gap-3">
-                                <i data-lucide={plan === 'ultimate' ? "zap" : "server"} className={calculatedData.planDetails.color}></i>
+                                {plan === 'ultimate' ? <Zap className={calculatedData.planDetails.color} /> : <Server className={calculatedData.planDetails.color} />}
                                 <div>
                                     <p className={`font-bold ${calculatedData.planDetails.color}`}>{calculatedData.planDetails.name} Plan</p>
                                     <p className="text-xs text-gray-300 opacity-80">100h Base Allowance</p>

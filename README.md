@@ -27,28 +27,27 @@ To run this application locally, you'll need to have Node.js and npm installed.
     ```bash
     npm install
     ```
-4.  **Build the application:**
+4.  **Run the development server:**
     ```bash
-    npm run build
+    npm run dev
     ```
-5.  **Open the `index.html` file in your web browser.**
-
+    This will start a local development server with Hot Module Replacement (HMR).
 
 ### Running with VS Code
 
-If you are using Visual Studio Code, you can use the provided task to run a local server:
+If you are using Visual Studio Code, you can use the provided task to run the development server:
 
 1.  Open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`).
 2.  Type `Tasks: Run Build Task`.
-3.  Select `Run GFN Tracker`.
-4.  Open your browser and navigate to `http://localhost:8000`.
+3.  Select `Run GFN Tracker (Dev)`.
+4.  Vite will provide a local URL to open in your browser.
 
 ## Technology Stack
 
+*   **Vite:** For the development server and build process.
 *   **React:** For the user interface and application logic.
 *   **Tailwind CSS:** For styling.
 *   **Lucide Icons:** For icons.
-*   **Babel:** For JavaScript transpilation.
 
 ## Contributing
 

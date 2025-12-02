@@ -2,14 +2,49 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Run GFN Tracker",
+            "label": "Run GFN Tracker (Dev)",
             "type": "shell",
-            "command": "python3 -m http.server 8000",
+            "command": "npm run dev",
             "problemMatcher": [],
             "isBackground": true,
             "group": {
                 "kind": "build",
                 "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Build GFN Tracker",
+            "type": "shell",
+            "command": "npm run build",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Preview GFN Tracker",
+            "type": "shell",
+            "command": "npm run preview",
+            "problemMatcher": [],
+            "isBackground": true,
+            "group": {
+                "kind": "build",
+                "isDefault": false
             },
             "presentation": {
                 "reveal": "always",

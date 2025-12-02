@@ -1,31 +1,47 @@
 # Project Overview
 
-This project is a single-file, self-contained web application for tracking GeForce NOW (GFN) usage. It's designed to be a Progressive Web App (PWA) that can be saved to a device's home screen for offline use. The application allows users to track their remaining GFN hours, calculate daily usage budgets, and estimate monthly costs based on their plan and any top-ups.
+This project is a web application for tracking GeForce NOW (GFN) usage. It's designed to be a Progressive Web App (PWA) that can be saved to a device's home screen for offline use. The application allows users to track their remaining GFN hours, calculate daily usage budgets, and estimate monthly costs based on their plan and any top-ups.
 
 ## Key Technologies
 
-*   **Framework:** React (loaded via CDN)
-*   **Styling:** Tailwind CSS (loaded via CDN)
-*   **Icons:** Lucide Icons (loaded via CDN)
+*   **Build Tool:** Vite
+*   **Framework:** React
+*   **Styling:** Tailwind CSS
+*   **Icons:** Lucide Icons (via `lucide-react`)
 *   **Language:** JavaScript (ES6+ with JSX)
 *   **Data Storage:** Browser Local Storage
 
 ## Architecture
 
-The entire application is contained within `index.html`. It uses a standard React functional component structure with hooks (`useState`, `useEffect`, `useMemo`). There is no build process or server-side component. All data is stored and retrieved from the browser's local storage, making it a purely client-side application.
+The application is built using Vite, which provides a modern, fast development environment and build process.
+
+*   **`index.html`**: The root `index.html` file serves as the main template for the application.
+*   **`src/App.jsx`**: This is the main entry point for the React application.
+*   **`public/`**: This directory contains static assets like `manifest.json` and the application icon, which are copied directly to the build output.
+*   **Dependencies**: All project dependencies are managed via npm in the `package.json` file.
+*   **Data Persistence**: Application state is persisted in the browser's local storage under the key `gfn-tracker-data`.
 
 # Building and Running
 
-This is a single-file web application with no build process. To run the project, simply open the `index.html` file in a web browser.
+The project now uses a Vite-based build process. To run the application, you'll need to have Node.js and npm installed.
 
-## To run the application:
+## To run the application for development:
 
 1.  Clone the repository.
-2.  Open the `index.html` file in a modern web browser that supports the technologies used (React, Tailwind CSS, etc.).
+2.  Install dependencies: `npm install`
+3.  Start the development server: `npm run dev`
+
+This will start a local development server with Hot Module Replacement (HMR).
+
+## To build for production:
+
+1.  Run the build command: `npm run build`
+2.  The production-ready files will be generated in the `dist/` directory.
+
+You can preview the production build locally with `npm run preview`.
 
 # Development Conventions
 
 *   **Code Style:** The code follows standard React and JSX conventions. It uses functional components and hooks.
-*   **Dependencies:** All dependencies are loaded from CDNs, as specified in the `<head>` of the `index.html` file.
-*   **Data Persistence:** Application state is persisted in the browser's local storage under the key `gfn-tracker-data`.
-*   **PWA:** The application is configured as a PWA through a data URI manifest and meta tags in the HTML.
+*   **Dependencies:** All dependencies are managed via npm and are listed in the `package.json` file.
+*   **PWA:** The application is configured as a PWA through a `public/manifest.json` file.
