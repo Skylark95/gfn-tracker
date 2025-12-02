@@ -27,7 +27,7 @@ To run this application locally, you'll need to have Node.js and npm installed.
     ```bash
     npm install
     ```
-4.  **Build the CSS:**
+4.  **Build the application:**
     ```bash
     npm run build
     ```
@@ -48,7 +48,7 @@ If you are using Visual Studio Code, you can use the provided task to run a loca
 *   **React:** For the user interface and application logic.
 *   **Tailwind CSS:** For styling.
 *   **Lucide Icons:** For icons.
-*   **Babel:** To transpile JSX in the browser.
+*   **Babel:** For JavaScript transpilation.
 
 ## Contributing
 

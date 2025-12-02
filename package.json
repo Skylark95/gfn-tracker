@@ -4,7 +4,9 @@
   "description": "A simple, self-contained web application for tracking your GeForce NOW (GFN) usage. This tool helps you manage your gaming hours, calculate daily usage budgets, and estimate your monthly costs. It's designed as a Progressive Web App (PWA), so you can save it to your home screen for easy access.",
   "main": "sw.js",
   "scripts": {
-    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css",
+    "build": "npm run build:css && npm run build:js",
+    "build:css": "tailwindcss -i ./src/input.css -o ./dist/output.css",
+    "build:js": "babel src/app.js -o dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +21,10 @@
   },
   "homepage": "https://github.com/Skylark95/gfn-tracker#readme",
   "devDependencies": {
+    "@babel/cli": "^7.28.3",
+    "@babel/core": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
+    "@babel/preset-react": "^7.28.5",
     "tailwindcss": "^3.4.1"
   }
 }
