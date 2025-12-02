@@ -11,9 +11,9 @@ A simple, self-contained web application for tracking your GeForce NOW (GFN) usa
 *   **PWA Support:** Install the app on your mobile device or desktop for an app-like experience.
 *   **Privacy-Focused:** All data is stored locally in your browser; nothing is sent to a server.
 
-## Getting Started
+## Development
 
-There is no build process or complex setup required to run this application.
+To run this application locally, you'll need to have Node.js and npm installed.
 
 1.  **Clone the repository:**
     ```bash
@@ -23,9 +23,16 @@ There is no build process or complex setup required to run this application.
     ```bash
     cd gfn-tracker
     ```
-3.  **Open the `index.html` file in your web browser.**
+3.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+4.  **Build the CSS:**
+    ```bash
+    npm run build
+    ```
+5.  **Open the `index.html` file in your web browser.**
 
-That's it! The application will load, and you can start tracking your usage.
 
 ### Running with VS Code
 
@@ -38,10 +45,10 @@ If you are using Visual Studio Code, you can use the provided task to run a loca
 
 ## Technology Stack
 
-*   **React:** For the user interface and application logic (loaded via CDN).
-*   **Tailwind CSS:** For styling (loaded via CDN).
-*   **Lucide Icons:** For icons (loaded via CDN).
-*   **Babel:** To transpile JSX in the browser (loaded via CDN).
+*   **React:** For the user interface and application logic.
+*   **Tailwind CSS:** For styling.
+*   **Lucide Icons:** For icons.
+*   **Babel:** To transpile JSX in the browser.
 
 ## Contributing
 
