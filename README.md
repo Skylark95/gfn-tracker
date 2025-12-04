@@ -72,3 +72,7 @@ Contributions are welcome! If you have ideas for improvements or find any bugs, 
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Disclaimer
+
+This application was completely written using [`gemini-cli`](https://github.com/google-gemini/gemini-cli).

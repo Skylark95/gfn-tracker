@@ -482,6 +482,8 @@ const App: React.FC = () => {
           GeForce NOW™ is a trademark of NVIDIA Corporation.
           <br />
           This app is a community tool and not affiliated with NVIDIA.
+          <br />
+          This application was completely written using <a href="https://github.com/google-gemini/gemini-cli" target="_blank" rel="noopener noreferrer">gemini-cli</a>.
         </div>
       </div>
     </div>
