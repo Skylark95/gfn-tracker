@@ -10,6 +10,7 @@ import {
   DollarSign,
   Zap,
   Server,
+  Github,
 } from 'lucide-react'
 import './input.css'
 
@@ -208,6 +209,15 @@ const App: React.FC = () => {
           </h1>
         </div>
         <div className="flex items-center gap-2">
+          <a
+            href="https://github.com/skylark95/gfn-tracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 rounded-full bg-[#222] text-gray-400 hover:bg-[#333] transition-colors"
+            title="GitHub Repository"
+          >
+            <Github />
+          </a>
           {installPromptEvent && (
             <button
               onClick={handleInstallClick}
