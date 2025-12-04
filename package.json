@@ -1,34 +1,38 @@
 {
-  "name": "gfn-tracker",
-  "version": "1.0.0",
-  "description": "A simple, self-contained web application for tracking your GeForce NOW (GFN) usage. This tool helps you manage your gaming hours, calculate daily usage budgets, and estimate your monthly costs. It's designed as a Progressive Web App (PWA), so you can save it to your home screen for easy access.",
-  "main": "sw.js",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Skylark95/gfn-tracker.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Skylark95/gfn-tracker/issues"
-  },
-  "homepage": "https://github.com/Skylark95/gfn-tracker#readme",
-  "devDependencies": {
-    "@vitejs/plugin-react": "^5.1.1",
-    "autoprefixer": "^10.4.22",
-    "tailwindcss": "^3.4.1",
-    "vite": "^7.2.6"
-  },
-  "dependencies": {
-    "lucide-react": "^0.555.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
-  }
+    "name": "gfn-tracker",
+    "version": "1.0.0",
+    "description": "A simple, self-contained web application for tracking your GeForce NOW (GFN) usage. This tool helps you manage your gaming hours, calculate daily usage budgets, and estimate your monthly costs. It's designed as a Progressive Web App (PWA), so you can save it to your home screen for easy access.",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Skylark95/gfn-tracker.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Skylark95/gfn-tracker/issues"
+    },
+    "homepage": "https://github.com/Skylark95/gfn-tracker#readme",
+    "devDependencies": {
+        "@types/react": "^19.2.7",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^5.1.1",
+        "autoprefixer": "^10.4.22",
+        "postcss": "^8.5.6",
+        "tailwindcss": "^3.4.1",
+        "typescript": "^5.9.3",
+        "vite": "^7.2.6",
+        "vite-tsconfig-paths": "^5.1.4"
+    },
+    "dependencies": {
+        "lucide-react": "^0.555.0",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0"
+    }
 }

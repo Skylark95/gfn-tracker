@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import ReactDOM from 'react-dom/client';
 import { Monitor, Download, Settings, X, CreditCard, ShoppingCart, CalendarClock, DollarSign, Zap, Server } from 'lucide-react';
 import './input.css';
 
@@ -9,7 +8,7 @@ const ROLLOVER_HOURS = 15;
 const TOP_UP_HOURS = 15;
 
 // Pricing Constants (based on late 2024/early 2025 data)
-const PLANS = {
+const PLANS: Record<string, Plan> = {
     performance: {
         name: 'Performance',
         basePrice: 9.99,
@@ -28,22 +27,36 @@ const PLANS = {
     }
 };
 
-const App = () => {
+interface Plan {
+    name: string;
+    basePrice: number;
+    topUpPrice: number;
+    color: string;
+    bg: string;
+    border: string;
+}
+
+interface Balance {
+    hours: number;
+    minutes: number;
+}
+
+const App: React.FC = () => {
     // --- State ---
-    const [plan, setPlan] = useState('performance');
-    const [balance, setBalance] = useState({ hours: 100, minutes: 0 });
-    const [renewalDate, setRenewalDate] = useState('');
-    const [purchasedBlocks, setPurchasedBlocks] = useState(0);
-    const [excludeRollover, setExcludeRollover] = useState(false);
-    const [showSettings, setShowSettings] = useState(false);
-    const [lastSaved, setLastSaved] = useState(null);
-    const [installPromptEvent, setInstallPromptEvent] = useState(null);
+    const [plan, setPlan] = useState<string>('performance');
+    const [balance, setBalance] = useState<Balance>({ hours: 100, minutes: 0 });
+    const [renewalDate, setRenewalDate] = useState<string>('');
+    const [purchasedBlocks, setPurchasedBlocks] = useState<number>(0);
+    const [excludeRollover, setExcludeRollover] = useState<boolean>(false);
+    const [showSettings, setShowSettings] = useState<boolean>(false);
+    const [lastSaved, setLastSaved] = useState<Date | null>(null);
+    const [installPromptEvent, setInstallPromptEvent] = useState<any | null>(null);
 
     // --- Effects ---
 
     // Handle PWA installation prompt
     useEffect(() => {
-        const handleBeforeInstallPrompt = (e) => {
+        const handleBeforeInstallPrompt = (e: Event) => {
             e.preventDefault();
             setInstallPromptEvent(e);
         };
@@ -95,12 +108,12 @@ const App = () => {
         let daysRemaining = 0;
         
         if (renewal && renewal > now) {
-            const diffTime = Math.abs(renewal - now);
+            const diffTime = Math.abs(renewal.getTime() - now.getTime());
             daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
         }
 
         // Total current balance in decimal hours
-        let totalCurrentHours = parseFloat(balance.hours) + (parseFloat(balance.minutes) / 60);
+        let totalCurrentHours = parseFloat(String(balance.hours)) + (parseFloat(String(balance.minutes)) / 60);
         
         // Effective Balance (Handle Rollover Exclusion)
         let effectiveHours = excludeRollover 
@@ -128,7 +141,7 @@ const App = () => {
     const handleInstallClick = () => {
         if (installPromptEvent) {
             installPromptEvent.prompt();
-            installPromptEvent.userChoice.then(choiceResult => {
+            installPromptEvent.userChoice.then((choiceResult: { outcome: string }) => {
                 if (choiceResult.outcome === 'accepted') {
                     console.log('User accepted the install prompt');
                 } else {
@@ -139,17 +152,17 @@ const App = () => {
         }
     };
 
-    const formatCurrency = (val) => {
+    const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
     };
 
-    const formatHours = (decimalHours) => {
+    const formatHours = (decimalHours: number) => {
         const h = Math.floor(decimalHours);
         const m = Math.round((decimalHours - h) * 60);
         return `${h}h ${m}m`;
     };
 
-    const handleBalanceChange = (part, value) => {
+    const handleBalanceChange = (part: keyof Balance, value: string) => {
         setBalance(prev => ({ ...prev, [part]: value }));
     };
 
@@ -391,5 +404,4 @@ const App = () => {
     );
 };
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+export default App;
