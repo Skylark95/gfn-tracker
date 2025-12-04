@@ -17,7 +17,7 @@ To run this application locally, you'll need to have Node.js and npm installed.
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/gfn-tracker.git
+    git clone https://github.com/Skylark95/gfn-tracker.git
     ```
 2.  **Navigate to the directory:**
     ```bash
@@ -46,6 +46,7 @@ If you are using Visual Studio Code, you can use the provided task to run the de
 
 *   **Vite:** For the development server and build process.
 *   **React:** For the user interface and application logic.
+*   **TypeScript:** For type safety and improved developer experience.
 *   **Tailwind CSS:** For styling.
 *   **Lucide Icons:** For icons.
 
