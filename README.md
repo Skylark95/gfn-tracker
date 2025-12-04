@@ -42,6 +42,19 @@ If you are using Visual Studio Code, you can use the provided task to run the de
 3.  Select `Run GFN Tracker (Dev)`.
 4.  Vite will provide a local URL to open in your browser.
 
+## Code Quality
+
+This project uses ESLint for code linting and Prettier for code formatting to ensure consistent code style and identify potential issues early.
+
+-   **Linting:** To check for code quality issues:
+    ```bash
+    npm run lint
+    ```
+-   **Formatting:** To automatically format your code:
+    ```bash
+    npm run format
+    ```
+
 ## Technology Stack
 
 - **Vite:** For the development server and build process.
@@ -49,6 +62,8 @@ If you are using Visual Studio Code, you can use the provided task to run the de
 - **TypeScript:** For type safety and improved developer experience.
 - **Tailwind CSS:** For styling.
 - **Lucide Icons:** For icons.
+- **ESLint:** For code linting and identifying potential issues.
+- **Prettier:** For consistent code formatting.
 
 ## Contributing
 

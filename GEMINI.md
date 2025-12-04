@@ -9,6 +9,8 @@ This project is a web application for tracking GeForce NOW (GFN) usage. It's des
 - **Styling:** Tailwind CSS
 - **Icons:** Lucide Icons (via `lucide-react`)
 - **Language:** TypeScript
+- **Linting:** ESLint (with TypeScript and React plugins)
+- **Formatting:** Prettier
 - **Data Storage:** Browser Local Storage
 
 ## Architecture
@@ -18,6 +20,10 @@ The application is built using Vite, which provides a modern, fast development e
 - **`index.html`**: The root `index.html` file serves as the main template for the application.
 - **`src/main.tsx`**: This is the main entry point for the React application.
 - **`src/App.tsx`**: This is the main React component.
+- **`eslint.config.js`**: The configuration file for ESLint, defining linting rules.
+- **`.prettierrc`**: The configuration file for Prettier, defining code formatting rules.
+- **`postcss.config.cjs`**: PostCSS configuration, used by Tailwind CSS.
+- **`tailwind.config.cjs`**: Tailwind CSS configuration.
 - **`public/`**: This directory contains static assets like `manifest.json` and the application icon, which are copied directly to the build output.
 - **Dependencies**: All project dependencies are managed via npm in the `package.json` file.
 - **Data Persistence**: Application state is persisted in the browser's local storage under the key `gfn-tracker-data`.
@@ -55,6 +61,6 @@ You can preview the production build locally with `npm run preview`.
 
 # Development Conventions
 
-- **Code Style:** The code follows standard React and TypeScript conventions. It uses functional components and hooks.
+- **Code Style:** The code follows standard React, TypeScript, ESLint, and Prettier conventions. It uses functional components and hooks.
 - **Dependencies:** All dependencies are managed via npm and are listed in the `package.json` file.
 - **PWA:** The application is configured as a PWA through a `public/manifest.json` file.
