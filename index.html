@@ -1,77 +1,91 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>GFN Tracker</title>
-    <base href="/">
-    
+    <base href="/" />
+
     <!-- PWA Manifest & Meta -->
-    <meta name="theme-color" content="#76b900">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="GFN Tracker">
-    <link rel="icon" href="/icon.svg">
-    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#76b900" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="GFN Tracker" />
+    <link rel="icon" href="/icon.svg" />
+    <link rel="manifest" href="/manifest.json" />
 
     <style>
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1a1a1a; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #333; 
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #76b900; 
-        }
-        
-        body {
-            background-color: #0a0a0a;
-            color: #e5e5e5;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1a1a1a;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #76b900;
+      }
 
-        /* Number input arrow removal */
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-            -webkit-appearance: none; 
-            margin: 0; 
-        }
+      body {
+        background-color: #0a0a0a;
+        color: #e5e5e5;
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+          Arial, sans-serif;
+        -webkit-tap-highlight-color: transparent;
+      }
 
-        .neon-border:focus-within {
-            box-shadow: 0 0 10px rgba(118, 185, 0, 0.3);
-            border-color: #76b900;
-        }
-        
-        .toggle-checkbox:checked {
-            right: 0;
-            border-color: #76b900;
-        }
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #76b900;
-        }
+      /* Number input arrow removal */
+      input[type='number']::-webkit-inner-spin-button,
+      input[type='number']::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      .neon-border:focus-within {
+        box-shadow: 0 0 10px rgba(118, 185, 0, 0.3);
+        border-color: #76b900;
+      }
+
+      .toggle-checkbox:checked {
+        right: 0;
+        border-color: #76b900;
+      }
+      .toggle-checkbox:checked + .toggle-label {
+        background-color: #76b900;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').then(registration => {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }, err => {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
-            });
-        }
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').then(
+            (registration) => {
+              console.log(
+                'ServiceWorker registration successful with scope: ',
+                registration.scope
+              )
+            },
+            (err) => {
+              console.log('ServiceWorker registration failed: ', err)
+            }
+          )
+        })
+      }
     </script>
-</body>
+  </body>
 </html>

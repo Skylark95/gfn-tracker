@@ -4,12 +4,12 @@ A simple, self-contained web application for tracking your GeForce NOW (GFN) usa
 
 ## Features
 
-*   **Track Remaining Hours:** Input your current GFN balance to see how much time you have left.
-*   **Daily Budget Calculation:** Set your subscription renewal date to automatically calculate a daily gaming budget.
-*   **Cost Estimation:**  Factor in your plan (Performance or Ultimate) and any purchased top-up blocks to see your estimated monthly cost.
-*   **Rollover Exclusion:**  Optionally exclude 15 rollover hours from your budget for more conservative planning.
-*   **PWA Support:** Install the app on your mobile device or desktop for an app-like experience.
-*   **Privacy-Focused:** All data is stored locally in your browser; nothing is sent to a server.
+- **Track Remaining Hours:** Input your current GFN balance to see how much time you have left.
+- **Daily Budget Calculation:** Set your subscription renewal date to automatically calculate a daily gaming budget.
+- **Cost Estimation:** Factor in your plan (Performance or Ultimate) and any purchased top-up blocks to see your estimated monthly cost.
+- **Rollover Exclusion:** Optionally exclude 15 rollover hours from your budget for more conservative planning.
+- **PWA Support:** Install the app on your mobile device or desktop for an app-like experience.
+- **Privacy-Focused:** All data is stored locally in your browser; nothing is sent to a server.
 
 ## Development
 
@@ -44,11 +44,11 @@ If you are using Visual Studio Code, you can use the provided task to run the de
 
 ## Technology Stack
 
-*   **Vite:** For the development server and build process.
-*   **React:** For the user interface and application logic.
-*   **TypeScript:** For type safety and improved developer experience.
-*   **Tailwind CSS:** For styling.
-*   **Lucide Icons:** For icons.
+- **Vite:** For the development server and build process.
+- **React:** For the user interface and application logic.
+- **TypeScript:** For type safety and improved developer experience.
+- **Tailwind CSS:** For styling.
+- **Lucide Icons:** For icons.
 
 ## Contributing
 
