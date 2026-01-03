@@ -3,7 +3,6 @@ import { checkRenewal } from './renewal'
 import { Balance } from '../types'
 
 describe('checkRenewal', () => {
-  const baseDate = new Date('2023-01-15T12:00:00')
   const pastDate = '2023-01-01T00:00:00' // Passed
   const futureDate = '2023-02-01T00:00:00' // Future
 
