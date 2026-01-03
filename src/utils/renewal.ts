@@ -1,6 +1,6 @@
 import { Balance } from '../types'
 import { ROLLOVER_HOURS } from './calculations'
-import { addMonths, format, parseISO, isValid } from 'date-fns'
+import { addMonths, format, isValid } from 'date-fns'
 
 export interface RenewalOptions {
   now?: number // timestamp
