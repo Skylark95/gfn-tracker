@@ -12,6 +12,14 @@ interface SettingsPanelProps {
   setPurchasedBlocks: (blocks: number) => void
   currentPlanDetails: Plan
   onClose: () => void
+  autoRenew: boolean
+  setAutoRenew: (val: boolean) => void
+  resetBalanceOnRenewal: boolean
+  setResetBalanceOnRenewal: (val: boolean) => void
+  includeRollover: boolean
+  setIncludeRollover: (val: boolean) => void
+  clearTopUpsOnRenewal: boolean
+  setClearTopUpsOnRenewal: (val: boolean) => void
 }
 
 const SettingsPanel: React.FC<SettingsPanelProps> = ({
@@ -23,6 +31,14 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   setPurchasedBlocks,
   currentPlanDetails,
   onClose,
+  autoRenew,
+  setAutoRenew,
+  resetBalanceOnRenewal,
+  setResetBalanceOnRenewal,
+  includeRollover,
+  setIncludeRollover,
+  clearTopUpsOnRenewal,
+  setClearTopUpsOnRenewal,
 }) => {
   return (
     <div className="space-y-6 animate-fade-in">
@@ -63,6 +79,41 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             />
           </div>
         </div>
+
+        {/* Auto Renew Options */}
+        <div className="space-y-3 mt-4 pt-4 border-t border-[#333]">
+          <label className="flex items-center justify-between group cursor-pointer">
+            <span className="text-sm text-gray-300">Auto renew</span>
+            <input
+              type="checkbox"
+              checked={autoRenew}
+              onChange={(e) => setAutoRenew(e.target.checked)}
+              className="w-5 h-5 rounded border-gray-600 bg-[#222] text-[#76b900] focus:ring-offset-0 focus:ring-[#76b900]"
+            />
+          </label>
+
+          <label className={`flex items-center justify-between group ${!autoRenew ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
+            <span className="text-sm text-gray-300">Reset balance on renewal</span>
+            <input
+              type="checkbox"
+              checked={resetBalanceOnRenewal}
+              onChange={(e) => setResetBalanceOnRenewal(e.target.checked)}
+              disabled={!autoRenew}
+              className="w-5 h-5 rounded border-gray-600 bg-[#222] text-[#76b900] focus:ring-offset-0 focus:ring-[#76b900]"
+            />
+          </label>
+
+          <label className={`flex items-center justify-between group ${!resetBalanceOnRenewal || !autoRenew ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
+            <span className="text-sm text-gray-300">Include rollover</span>
+            <input
+              type="checkbox"
+              checked={includeRollover}
+              onChange={(e) => setIncludeRollover(e.target.checked)}
+              disabled={!resetBalanceOnRenewal || !autoRenew}
+              className="w-5 h-5 rounded border-gray-600 bg-[#222] text-[#76b900] focus:ring-offset-0 focus:ring-[#76b900]"
+            />
+          </label>
+        </div>
       </section>
 
       <section className="bg-[#151515] p-5 rounded-2xl border border-[#333]">
@@ -95,6 +146,18 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
         <p className="text-right text-xs text-gray-500 mt-2">
           Cost per block: ${currentPlanDetails.topUpPrice}
         </p>
+
+        <div className="space-y-3 mt-4 pt-4 border-t border-[#333]">
+          <label className="flex items-center justify-between group cursor-pointer">
+            <span className="text-sm text-gray-300">Clear top-ups on renewal</span>
+            <input
+              type="checkbox"
+              checked={clearTopUpsOnRenewal}
+              onChange={(e) => setClearTopUpsOnRenewal(e.target.checked)}
+              className="w-5 h-5 rounded border-gray-600 bg-[#222] text-[#76b900] focus:ring-offset-0 focus:ring-[#76b900]"
+            />
+          </label>
+        </div>
       </section>
 
       <button

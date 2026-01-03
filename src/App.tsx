@@ -3,6 +3,7 @@ import './input.css'
 
 import { Balance, BeforeInstallPromptEvent } from './types'
 import { calculateData } from './utils/calculations'
+import { checkRenewal } from './utils/renewal'
 
 import Header from './components/Header'
 import SettingsPanel from './components/SettingsPanel'
@@ -37,6 +38,11 @@ const App: React.FC = () => {
   const [renewalDate, setRenewalDate] = useState<string>(() => getInitialState('renewalDate', ''));
   const [purchasedBlocks, setPurchasedBlocks] = useState<number>(() => getInitialState('purchasedBlocks', 0));
   const [excludeRollover, setExcludeRollover] = useState<boolean>(() => getInitialState('excludeRollover', false));
+  const [autoRenew, setAutoRenew] = useState<boolean>(() => getInitialState('autoRenew', true));
+  const [resetBalanceOnRenewal, setResetBalanceOnRenewal] = useState<boolean>(() => getInitialState('resetBalanceOnRenewal', true));
+  const [includeRollover, setIncludeRollover] = useState<boolean>(() => getInitialState('includeRollover', true));
+  const [clearTopUpsOnRenewal, setClearTopUpsOnRenewal] = useState<boolean>(() => getInitialState('clearTopUpsOnRenewal', true));
+
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [installPromptEvent, setInstallPromptEvent] = useState<BeforeInstallPromptEvent | null>(null);
 
@@ -57,6 +63,25 @@ const App: React.FC = () => {
     };
   }, []);
 
+  // Auto-renewal check on load (or when state changes relevantly)
+  useEffect(() => {
+    const result = checkRenewal({
+      renewalDate,
+      autoRenew,
+      resetBalanceOnRenewal,
+      includeRollover,
+      clearTopUpsOnRenewal,
+      balance,
+      purchasedBlocks,
+    })
+
+    if (result.didRenew) {
+      if (result.newRenewalDate) setRenewalDate(result.newRenewalDate)
+      if (result.newBalance) setBalance(result.newBalance)
+      if (result.newPurchasedBlocks !== undefined) setPurchasedBlocks(result.newPurchasedBlocks)
+    }
+  }, [renewalDate, autoRenew, resetBalanceOnRenewal, includeRollover, clearTopUpsOnRenewal, balance, purchasedBlocks])
+
   // Save to Local Storage on change
   useEffect(() => {
     const data = {
@@ -65,9 +90,13 @@ const App: React.FC = () => {
       renewalDate,
       purchasedBlocks,
       excludeRollover,
+      autoRenew,
+      resetBalanceOnRenewal,
+      includeRollover,
+      clearTopUpsOnRenewal,
     };
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
-  }, [plan, balance, renewalDate, purchasedBlocks, excludeRollover]);
+  }, [plan, balance, renewalDate, purchasedBlocks, excludeRollover, autoRenew, resetBalanceOnRenewal, includeRollover, clearTopUpsOnRenewal]);
 
   // --- Calculations ---
 
@@ -122,6 +151,14 @@ const App: React.FC = () => {
             setPurchasedBlocks={setPurchasedBlocks}
             currentPlanDetails={calculatedData.planDetails}
             onClose={() => setShowSettings(false)}
+            autoRenew={autoRenew}
+            setAutoRenew={setAutoRenew}
+            resetBalanceOnRenewal={resetBalanceOnRenewal}
+            setResetBalanceOnRenewal={setResetBalanceOnRenewal}
+            includeRollover={includeRollover}
+            setIncludeRollover={setIncludeRollover}
+            clearTopUpsOnRenewal={clearTopUpsOnRenewal}
+            setClearTopUpsOnRenewal={setClearTopUpsOnRenewal}
           />
         ) : (
           /* Dashboard View */
