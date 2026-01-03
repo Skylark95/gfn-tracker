@@ -4,7 +4,6 @@ import {
   formatCurrency,
   formatHours,
   PLANS,
-  ROLLOVER_HOURS,
 } from './calculations'
 
 describe('Utils', () => {
