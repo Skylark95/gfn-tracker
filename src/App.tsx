@@ -15,9 +15,6 @@ const LOCAL_STORAGE_KEY = 'gfn-tracker-data'
 const App: React.FC = () => {
   // --- State Initialization ---
 
-  // We want to initialize state from Local Storage, BUT also check for renewal immediately.
-  // This avoids "set state during effect" issues and makes the initial render correct.
-
   const getInitialData = () => {
     let saved: Record<string, unknown> = {}
     try {
@@ -43,7 +40,6 @@ const App: React.FC = () => {
     }
 
     // Merge saved with defaults
-    // Type assertions are needed because 'saved' values are unknown
     const savedBalance = saved.balance as Balance | undefined
 
     const currentData = {
@@ -81,17 +77,6 @@ const App: React.FC = () => {
     return currentData
   }
 
-  // Use a ref to ensure we only load initial data once to prevent re-calculations on every render
-  // Actually, useState(initializer) only runs once.
-  // However, we need to extract the individual fields for separate state atoms.
-  // So we call getInitialData() once inside a useState or just once here?
-  // useState(() => getInitialData()) works, but returns the whole object.
-  // We want separate states.
-
-  // Cleanest way: Call it once, store in a constant (which is recreated on render? No, useMemo or lazy init).
-  // But we can't share the result of one lazy init across multiple useStates easily without a custom hook or ref.
-  // Let's just run it once.
-
   const [initialData] = useState(() => getInitialData())
 
   const [plan, setPlan] = useState<string>(initialData.plan)
@@ -123,11 +108,6 @@ const App: React.FC = () => {
       )
     }
   }, [])
-
-  // We removed the "useEffect" for renewal check because it's now done in initialization!
-  // This solves the lint error and the problem.
-  // HOWEVER: If the user leaves the app open for a month, it won't auto-renew until reload.
-  // Given "check on page load" was the explicit requirement in the user prompt ("check on page load and auto renew if necessary"), this is fully compliant.
 
   // Save to Local Storage on change
   useEffect(() => {
