@@ -44,7 +44,7 @@ If you are using Visual Studio Code, you can use the provided task to run the de
 
 ## Code Quality
 
-This project uses ESLint for code linting and Prettier for code formatting to ensure consistent code style and identify potential issues early.
+This project uses ESLint for code linting, Prettier for code formatting, and Vitest for testing.
 
 -   **Linting:** To check for code quality issues:
     ```bash
@@ -54,6 +54,10 @@ This project uses ESLint for code linting and Prettier for code formatting to en
     ```bash
     npm run format
     ```
+-   **Testing:** To run the test suite:
+    ```bash
+    npm test
+    ```
 
 ## Technology Stack
 
@@ -62,6 +66,7 @@ This project uses ESLint for code linting and Prettier for code formatting to en
 - **TypeScript:** For type safety and improved developer experience.
 - **Tailwind CSS:** For styling.
 - **Lucide Icons:** For icons.
+- **Vitest:** For unit testing.
 - **ESLint:** For code linting and identifying potential issues.
 - **Prettier:** For consistent code formatting.
 
