@@ -13,6 +13,14 @@ describe('SettingsPanel', () => {
     setPurchasedBlocks: vi.fn(),
     currentPlanDetails: PLANS.performance,
     onClose: vi.fn(),
+    autoRenew: true,
+    setAutoRenew: vi.fn(),
+    resetBalanceOnRenewal: true,
+    setResetBalanceOnRenewal: vi.fn(),
+    includeRollover: true,
+    setIncludeRollover: vi.fn(),
+    clearTopUpsOnRenewal: true,
+    setClearTopUpsOnRenewal: vi.fn(),
   }
 
   it('renders plan details correctly', () => {
@@ -40,5 +48,24 @@ describe('SettingsPanel', () => {
     const saveButton = screen.getByText('Save & View Dashboard')
     fireEvent.click(saveButton)
     expect(mockProps.onClose).toHaveBeenCalled()
+  })
+
+  it('toggles auto renew option', () => {
+    render(<SettingsPanel {...mockProps} />)
+    const autoRenewCheckbox = screen.getByLabelText('Auto renew')
+    fireEvent.click(autoRenewCheckbox)
+    expect(mockProps.setAutoRenew).toHaveBeenCalledWith(false)
+  })
+
+  it('disables reset balance if auto renew is off', () => {
+    render(<SettingsPanel {...mockProps} autoRenew={false} />)
+    const resetCheckbox = screen.getByLabelText('Reset balance on renewal')
+    expect(resetCheckbox).toBeDisabled()
+  })
+
+  it('disables rollover if reset balance is off', () => {
+    render(<SettingsPanel {...mockProps} resetBalanceOnRenewal={false} />)
+    const rolloverCheckbox = screen.getByLabelText('Include rollover')
+    expect(rolloverCheckbox).toBeDisabled()
   })
 })

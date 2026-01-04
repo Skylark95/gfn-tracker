@@ -3,6 +3,7 @@ import './input.css'
 
 import { Balance, BeforeInstallPromptEvent } from './types'
 import { calculateData } from './utils/calculations'
+import { checkRenewal } from './utils/renewal'
 
 import Header from './components/Header'
 import SettingsPanel from './components/SettingsPanel'
@@ -12,50 +13,101 @@ import Dashboard from './components/Dashboard'
 const LOCAL_STORAGE_KEY = 'gfn-tracker-data'
 
 const App: React.FC = () => {
-  // --- State Initialization from Local Storage ---
-  const getInitialState = <T extends string | Balance | number | boolean>(key: string, defaultValue: T): T => {
+  // --- State Initialization ---
+
+  const getInitialData = () => {
+    let saved: Record<string, unknown> = {}
     try {
-      const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+      const savedData = localStorage.getItem(LOCAL_STORAGE_KEY)
       if (savedData) {
-        const parsed = JSON.parse(savedData);
-        if (key === 'balance') {
-          return {
-            hours: parsed.balance?.hours ?? (defaultValue as Balance).hours,
-            minutes: parsed.balance?.minutes ?? (defaultValue as Balance).minutes,
-          } as T;
-        }
-        return parsed[key] ?? defaultValue;
+        saved = JSON.parse(savedData)
       }
     } catch (e) {
-      console.error(`Failed to load ${key} from local storage`, e);
+      console.error('Failed to load data', e)
     }
-    return defaultValue;
-  };
 
-  const [plan, setPlan] = useState<string>(() => getInitialState('plan', 'performance'));
-  const [balance, setBalance] = useState<Balance>(() => getInitialState('balance', { hours: 100, minutes: 0 }));
-  const [renewalDate, setRenewalDate] = useState<string>(() => getInitialState('renewalDate', ''));
-  const [purchasedBlocks, setPurchasedBlocks] = useState<number>(() => getInitialState('purchasedBlocks', 0));
-  const [excludeRollover, setExcludeRollover] = useState<boolean>(() => getInitialState('excludeRollover', false));
-  const [showSettings, setShowSettings] = useState<boolean>(false);
-  const [installPromptEvent, setInstallPromptEvent] = useState<BeforeInstallPromptEvent | null>(null);
+    // Default Values
+    const defaults = {
+      plan: 'performance',
+      balance: { hours: 100, minutes: 0 },
+      renewalDate: '',
+      purchasedBlocks: 0,
+      excludeRollover: false,
+      autoRenew: true,
+      resetBalanceOnRenewal: true,
+      includeRollover: true,
+      clearTopUpsOnRenewal: true,
+    }
+
+    // Merge saved with defaults
+    const savedBalance = saved.balance as Balance | undefined
+
+    const currentData = {
+      plan: (saved.plan as string) ?? defaults.plan,
+      balance: {
+        hours: savedBalance?.hours ?? defaults.balance.hours,
+        minutes: savedBalance?.minutes ?? defaults.balance.minutes,
+      },
+      renewalDate: (saved.renewalDate as string) ?? defaults.renewalDate,
+      purchasedBlocks: (saved.purchasedBlocks as number) ?? defaults.purchasedBlocks,
+      excludeRollover: (saved.excludeRollover as boolean) ?? defaults.excludeRollover,
+      autoRenew: (saved.autoRenew as boolean) ?? defaults.autoRenew,
+      resetBalanceOnRenewal: (saved.resetBalanceOnRenewal as boolean) ?? defaults.resetBalanceOnRenewal,
+      includeRollover: (saved.includeRollover as boolean) ?? defaults.includeRollover,
+      clearTopUpsOnRenewal: (saved.clearTopUpsOnRenewal as boolean) ?? defaults.clearTopUpsOnRenewal,
+    }
+
+    // Perform Renewal Check on the raw data
+    const renewalResult = checkRenewal({
+      renewalDate: currentData.renewalDate,
+      autoRenew: currentData.autoRenew,
+      resetBalanceOnRenewal: currentData.resetBalanceOnRenewal,
+      includeRollover: currentData.includeRollover,
+      clearTopUpsOnRenewal: currentData.clearTopUpsOnRenewal,
+      balance: currentData.balance,
+      purchasedBlocks: currentData.purchasedBlocks,
+    })
+
+    if (renewalResult.didRenew) {
+      if (renewalResult.newRenewalDate) currentData.renewalDate = renewalResult.newRenewalDate
+      if (renewalResult.newBalance) currentData.balance = renewalResult.newBalance
+      if (renewalResult.newPurchasedBlocks !== undefined) currentData.purchasedBlocks = renewalResult.newPurchasedBlocks
+    }
+
+    return currentData
+  }
+
+  const [initialData] = useState(() => getInitialData())
+
+  const [plan, setPlan] = useState<string>(initialData.plan)
+  const [balance, setBalance] = useState<Balance>(initialData.balance)
+  const [renewalDate, setRenewalDate] = useState<string>(initialData.renewalDate)
+  const [purchasedBlocks, setPurchasedBlocks] = useState<number>(initialData.purchasedBlocks)
+  const [excludeRollover, setExcludeRollover] = useState<boolean>(initialData.excludeRollover)
+  const [autoRenew, setAutoRenew] = useState<boolean>(initialData.autoRenew)
+  const [resetBalanceOnRenewal, setResetBalanceOnRenewal] = useState<boolean>(initialData.resetBalanceOnRenewal)
+  const [includeRollover, setIncludeRollover] = useState<boolean>(initialData.includeRollover)
+  const [clearTopUpsOnRenewal, setClearTopUpsOnRenewal] = useState<boolean>(initialData.clearTopUpsOnRenewal)
+
+  const [showSettings, setShowSettings] = useState<boolean>(false)
+  const [installPromptEvent, setInstallPromptEvent] = useState<BeforeInstallPromptEvent | null>(null)
 
   // --- Effects ---
 
   // Handle PWA installation prompt
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault();
-      setInstallPromptEvent(e as BeforeInstallPromptEvent); // Type assertion here
-    };
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      e.preventDefault()
+      setInstallPromptEvent(e as BeforeInstallPromptEvent)
+    }
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
     return () => {
       window.removeEventListener(
         'beforeinstallprompt',
         handleBeforeInstallPrompt
-      );
-    };
-  }, []);
+      )
+    }
+  }, [])
 
   // Save to Local Storage on change
   useEffect(() => {
@@ -65,9 +117,23 @@ const App: React.FC = () => {
       renewalDate,
       purchasedBlocks,
       excludeRollover,
-    };
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
-  }, [plan, balance, renewalDate, purchasedBlocks, excludeRollover]);
+      autoRenew,
+      resetBalanceOnRenewal,
+      includeRollover,
+      clearTopUpsOnRenewal,
+    }
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data))
+  }, [
+    plan,
+    balance,
+    renewalDate,
+    purchasedBlocks,
+    excludeRollover,
+    autoRenew,
+    resetBalanceOnRenewal,
+    includeRollover,
+    clearTopUpsOnRenewal,
+  ])
 
   // --- Calculations ---
 
@@ -87,7 +153,7 @@ const App: React.FC = () => {
     if (installPromptEvent) {
       installPromptEvent.prompt()
       installPromptEvent.userChoice.then(
-        (choiceResult) => { // Removed type assertion here, as it's not `any` anymore
+        (choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
             console.log('User accepted the install prompt')
           } else {
@@ -122,6 +188,14 @@ const App: React.FC = () => {
             setPurchasedBlocks={setPurchasedBlocks}
             currentPlanDetails={calculatedData.planDetails}
             onClose={() => setShowSettings(false)}
+            autoRenew={autoRenew}
+            setAutoRenew={setAutoRenew}
+            resetBalanceOnRenewal={resetBalanceOnRenewal}
+            setResetBalanceOnRenewal={setResetBalanceOnRenewal}
+            includeRollover={includeRollover}
+            setIncludeRollover={setIncludeRollover}
+            clearTopUpsOnRenewal={clearTopUpsOnRenewal}
+            setClearTopUpsOnRenewal={setClearTopUpsOnRenewal}
           />
         ) : (
           /* Dashboard View */
