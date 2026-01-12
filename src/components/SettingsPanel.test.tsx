@@ -1,26 +1,26 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import SettingsPanel from './SettingsPanel'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, mock } from 'bun:test'
 import { PLANS } from '../utils/calculations'
 
 describe('SettingsPanel', () => {
   const mockProps = {
     plan: 'performance',
-    setPlan: vi.fn(),
+    setPlan: mock(),
     renewalDate: '',
-    setRenewalDate: vi.fn(),
+    setRenewalDate: mock(),
     purchasedBlocks: 0,
-    setPurchasedBlocks: vi.fn(),
+    setPurchasedBlocks: mock(),
     currentPlanDetails: PLANS.performance,
-    onClose: vi.fn(),
+    onClose: mock(),
     autoRenew: true,
-    setAutoRenew: vi.fn(),
+    setAutoRenew: mock(),
     resetBalanceOnRenewal: true,
-    setResetBalanceOnRenewal: vi.fn(),
+    setResetBalanceOnRenewal: mock(),
     includeRollover: true,
-    setIncludeRollover: vi.fn(),
+    setIncludeRollover: mock(),
     clearTopUpsOnRenewal: true,
-    setClearTopUpsOnRenewal: vi.fn(),
+    setClearTopUpsOnRenewal: mock(),
   }
 
   it('renders plan details correctly', () => {

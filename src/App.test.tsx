@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
 import App from './App'
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect } from 'bun:test'
 
 describe('App Smoke Test', () => {
   it('renders the main application sections', () => {

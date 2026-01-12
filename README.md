@@ -25,11 +25,11 @@ To run this application locally, you'll need to have Node.js and npm installed.
     ```
 3.  **Install dependencies:**
     ```bash
-    npm install
+    bun install
     ```
 4.  **Run the development server:**
     ```bash
-    npm run dev
+    bun run dev
     ```
     This will start a local development server with Hot Module Replacement (HMR).
 
@@ -48,15 +48,17 @@ This project uses ESLint for code linting, Prettier for code formatting, and Vit
 
 -   **Linting:** To check for code quality issues:
     ```bash
-    npm run lint
+-   **Linting:** To check for code quality issues:
+    ```bash
+    bun run lint
     ```
 -   **Formatting:** To automatically format your code:
     ```bash
-    npm run format
+    bun run format
     ```
 -   **Testing:** To run the test suite:
     ```bash
-    npm test
+    bun test
     ```
 
 ## Technology Stack
@@ -66,7 +68,7 @@ This project uses ESLint for code linting, Prettier for code formatting, and Vit
 - **TypeScript:** For type safety and improved developer experience.
 - **Tailwind CSS:** For styling.
 - **Lucide Icons:** For icons.
-- **Vitest:** For unit testing.
+- **Bun:** For testing and package management.
 - **ESLint:** For code linting and identifying potential issues.
 - **Prettier:** For consistent code formatting.
 

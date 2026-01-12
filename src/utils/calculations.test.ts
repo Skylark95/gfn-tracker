@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from 'vitest'
+import { describe, it, expect, afterEach, setSystemTime } from 'bun:test'
 import {
   calculateData,
   formatCurrency,
@@ -31,7 +31,7 @@ describe('Utils', () => {
     const mockBalance = { hours: 10, minutes: 30 }
 
     afterEach(() => {
-        vi.useRealTimers()
+      setSystemTime()
     })
 
     it('should calculate basic totals correctly', () => {
@@ -49,7 +49,7 @@ describe('Utils', () => {
     })
 
     it('should handle rollover exclusion', () => {
-       // 10.5 hours - 15 hours rollover = 0 effective (floored at 0)
+      // 10.5 hours - 15 hours rollover = 0 effective (floored at 0)
       const result = calculateData(
         'performance',
         mockBalance,
@@ -72,48 +72,47 @@ describe('Utils', () => {
     })
 
     it('should calculate budget per day correctly', () => {
-        // Mock current date to 2024-01-01
-        vi.useFakeTimers()
-        const mockNow = new Date('2024-01-01T00:00:00')
-        vi.setSystemTime(mockNow)
+      // Mock current date to 2024-01-01
+      const mockNow = new Date('2024-01-01T00:00:00')
+      setSystemTime(mockNow)
 
-        // Renewal in 10 days
-        const renewalDate = '2024-01-11T00:00:00'
+      // Renewal in 10 days
+      const renewalDate = '2024-01-11T00:00:00'
 
-        const result = calculateData(
-            'performance',
-            { hours: 100, minutes: 0 },
-            renewalDate,
-            0,
-            false
-        )
+      const result = calculateData(
+        'performance',
+        { hours: 100, minutes: 0 },
+        renewalDate,
+        0,
+        false
+      )
 
-        expect(result.daysRemaining).toBe(10)
-        expect(result.budgetPerDay).toBe(10) // 100 hours / 10 days
+      expect(result.daysRemaining).toBe(10)
+      expect(result.budgetPerDay).toBe(10) // 100 hours / 10 days
     })
 
     it('should calculate cost with top-ups', () => {
-        const blocks = 2
-        const result = calculateData(
-            'performance',
-            mockBalance,
-            '',
-            blocks,
-            false
-        )
-        const expectedCost = PLANS.performance.basePrice + (blocks * PLANS.performance.topUpPrice)
-        expect(result.totalCost).toBeCloseTo(expectedCost)
+      const blocks = 2
+      const result = calculateData(
+        'performance',
+        mockBalance,
+        '',
+        blocks,
+        false
+      )
+      const expectedCost = PLANS.performance.basePrice + (blocks * PLANS.performance.topUpPrice)
+      expect(result.totalCost).toBeCloseTo(expectedCost)
     })
 
     it('should default to performance plan if invalid plan provided', () => {
-         const result = calculateData(
-            'invalid-plan',
-            mockBalance,
-            '',
-            0,
-            false
-        )
-        expect(result.planDetails).toEqual(PLANS.performance)
+      const result = calculateData(
+        'invalid-plan',
+        mockBalance,
+        '',
+        0,
+        false
+      )
+      expect(result.planDetails).toEqual(PLANS.performance)
     })
   })
 })

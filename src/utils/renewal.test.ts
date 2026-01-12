@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect } from 'bun:test'
 import { checkRenewal } from './renewal'
 import { Balance } from '../types'
 
@@ -84,7 +84,7 @@ describe('checkRenewal', () => {
   })
 
   it('should handle invalid renewal date gracefully', () => {
-     const result = checkRenewal({ ...defaultOptions, renewalDate: '' })
-     expect(result.didRenew).toBe(false)
+    const result = checkRenewal({ ...defaultOptions, renewalDate: '' })
+    expect(result.didRenew).toBe(false)
   })
 })

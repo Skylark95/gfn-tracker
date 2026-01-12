@@ -40,33 +40,33 @@ The project uses a Vite-based build process.
 
 ## To run the application for development:
 
-1.  Install dependencies: `npm install`
-2.  Start the development server: `npm run dev`
+1.  Install dependencies: `bun install`
+2.  Start the development server: `bun run dev`
 
 This will start a local development server with Hot Module Replacement (HMR).
 
 ## To build for production:
 
-1.  Run the build command: `npm run build`
+1.  Run the build command: `bun run build`
 2.  The production-ready files will be generated in the `dist/` directory.
 
-You can preview the production build locally with `npm run preview`.
+You can preview the production build locally with `bun run preview`.
 
 # Testing
 
-The project uses Vitest and React Testing Library for testing.
+The project uses Bun's native test runner and React Testing Library for testing.
 
-- **Run tests:** `npm test`
+- **Run tests:** `bun test`
 - **Test files:** Co-located with source files (e.g., `src/utils/calculations.test.ts`, `src/components/Dashboard.test.tsx`).
 
 # Development Conventions
 
 - **Code Style:** The code follows standard React, TypeScript, ESLint, and Prettier conventions. It uses functional components and hooks.
 - **TypeScript:** The project is fully TypeScript. Ensure strict type safety and avoid `any` where possible.
-- **Dependencies:** All dependencies are managed via npm and are listed in the `package.json` file.
+- **Dependencies:** All dependencies are managed via Bun and are listed in the `package.json` file.
 - **PWA:** The application is configured as a PWA through a `public/manifest.json` file.
 - **Agent Guidelines:** When modifying code, ensure you:
     1.  Follow existing file organization (`src/components`, `src/utils`).
     2.  Update or add tests for new logic.
-    3.  Run `npm run lint` and `npm test` before submitting changes.
+    3.  Run `bun run lint` and `bun test` before submitting changes.
     4.  Keep `src/types.ts` updated with any new shared types.
