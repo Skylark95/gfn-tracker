@@ -8,9 +8,7 @@ describe('Dashboard', () => {
     balance: { hours: 10, minutes: 0 },
     setBalance: mock(),
     setExcludeRollover: mock(),
-    settings: {
-        excludeRollover: false,
-    },
+    excludeRollover: false,
     calculatedData: {
       daysRemaining: 10,
       totalCurrentHours: 10,
