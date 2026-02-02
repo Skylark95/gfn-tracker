@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from 'vitest'
+import { describe, it, expect, setSystemTime, afterEach } from 'bun:test'
 import {
   calculateData,
   formatCurrency,
@@ -31,7 +31,7 @@ describe('Utils', () => {
     const mockBalance = { hours: 10, minutes: 30 }
 
     afterEach(() => {
-        vi.useRealTimers()
+        setSystemTime()
     })
 
     it('should calculate basic totals correctly', () => {
@@ -73,9 +73,8 @@ describe('Utils', () => {
 
     it('should calculate budget per day correctly', () => {
         // Mock current date to 2024-01-01
-        vi.useFakeTimers()
         const mockNow = new Date('2024-01-01T00:00:00')
-        vi.setSystemTime(mockNow)
+        setSystemTime(mockNow)
 
         // Renewal in 10 days
         const renewalDate = '2024-01-11T00:00:00'

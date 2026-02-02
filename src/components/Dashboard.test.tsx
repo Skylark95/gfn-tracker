@@ -1,14 +1,16 @@
 import { render, screen, fireEvent } from '@testing-library/react'
+import { describe, it, expect, mock } from 'bun:test'
 import Dashboard from './Dashboard'
-import { describe, it, expect, vi } from 'vitest'
 import { PLANS } from '../utils/calculations'
 
 describe('Dashboard', () => {
   const mockProps = {
     balance: { hours: 10, minutes: 0 },
-    setBalance: vi.fn(),
-    excludeRollover: false,
-    setExcludeRollover: vi.fn(),
+    setBalance: mock(),
+    setExcludeRollover: mock(),
+    settings: {
+        excludeRollover: false,
+    },
     calculatedData: {
       daysRemaining: 10,
       totalCurrentHours: 10,
