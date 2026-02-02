@@ -13,7 +13,7 @@ A simple, self-contained web application for tracking your GeForce NOW (GFN) usa
 
 ## Development
 
-To run this application locally, you'll need to have Node.js and npm installed.
+To run this application locally, you'll need to have [Bun](https://bun.sh) installed.
 
 1.  **Clone the repository:**
     ```bash
@@ -25,11 +25,11 @@ To run this application locally, you'll need to have Node.js and npm installed.
     ```
 3.  **Install dependencies:**
     ```bash
-    npm install
+    bun install
     ```
 4.  **Run the development server:**
     ```bash
-    npm run dev
+    bun run dev
     ```
     This will start a local development server with Hot Module Replacement (HMR).
 
@@ -48,19 +48,20 @@ This project uses ESLint for code linting, Prettier for code formatting, and Vit
 
 -   **Linting:** To check for code quality issues:
     ```bash
-    npm run lint
+    bun run lint
     ```
 -   **Formatting:** To automatically format your code:
     ```bash
-    npm run format
+    bun run format
     ```
 -   **Testing:** To run the test suite:
     ```bash
-    npm test
+    bun test
     ```
 
 ## Technology Stack
 
+- **Bun:** For package management and running scripts.
 - **Vite:** For the development server and build process.
 - **React:** For the user interface and application logic.
 - **TypeScript:** For type safety and improved developer experience.
