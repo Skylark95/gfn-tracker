@@ -145,17 +145,41 @@ const Dashboard: React.FC<DashboardProps> = ({
             )}
           </div>
           <div className="mt-4">
-            <p className="text-gray-400 text-xs uppercase tracking-wider font-semibold">
+            <div className="text-gray-400 text-xs uppercase tracking-wider font-semibold">
               Est. Monthly Cost
-            </p>
-            <p className="text-2xl text-white font-bold mt-1">
+            </div>
+            <div className="text-2xl text-white font-bold mt-1 flex items-center gap-2">
               {formatCurrency(
                 billingCycle === 'yearly'
                   ? calculatedData.planDetails.yearlyPrice / 12 +
                       purchasedBlocks * calculatedData.planDetails.topUpPrice
                   : calculatedData.totalCost
               )}
-            </p>
+              {billingCycle === 'yearly' && (
+                <div className="group relative">
+                  <div className="cursor-help text-gray-500 hover:text-gray-300">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                  </div>
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-[#222] border border-[#444] rounded shadow-xl text-xs text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                    Includes amortized yearly plan ({formatCurrency(calculatedData.planDetails.yearlyPrice / 12)}/mo) + immediate top-ups.
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

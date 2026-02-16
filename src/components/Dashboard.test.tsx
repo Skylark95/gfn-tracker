@@ -69,4 +69,19 @@ describe('Dashboard', () => {
       render(<Dashboard {...mockProps} billingCycle="yearly" purchasedBlocks={1} />)
       expect(screen.getByText('$11.32')).toBeInTheDocument()
   })
+
+  it('shows tooltip for yearly plans', () => {
+      render(<Dashboard {...mockProps} billingCycle="yearly" />)
+      // The tooltip text might not be visible immediately, but the logic should be present
+      // We can check if the HELP icon is there
+      // Lucide icons usually render as SVGs, we can look for the class or container
+      const tooltipIcon = document.querySelector('.cursor-help')
+      expect(tooltipIcon).toBeInTheDocument()
+  })
+
+  it('does not show tooltip for monthly plans', () => {
+      render(<Dashboard {...mockProps} billingCycle="monthly" />)
+      const tooltipIcon = document.querySelector('.cursor-help')
+      expect(tooltipIcon).not.toBeInTheDocument()
+  })
 })
