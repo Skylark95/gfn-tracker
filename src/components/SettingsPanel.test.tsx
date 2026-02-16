@@ -54,19 +54,15 @@ describe('SettingsPanel', () => {
 
   it('toggles auto renew option', () => {
     render(<SettingsPanel {...mockProps} />)
-    const autoRenewCheckbox = screen.getByLabelText('Auto renew')
+    const autoRenewCheckbox = screen.getByRole('checkbox', { name: /Auto-reset balance monthly/i })
     fireEvent.click(autoRenewCheckbox)
     expect(mockProps.setAutoRenew).toHaveBeenCalledWith(false)
   })
 
-  it('disables reset balance if auto renew is off', () => {
-    render(<SettingsPanel {...mockProps} autoRenew={false} />)
-    const resetCheckbox = screen.getByLabelText('Reset balance on renewal')
-    expect(resetCheckbox).toBeDisabled()
-  })
 
-  it('disables rollover if reset balance is off', () => {
-    render(<SettingsPanel {...mockProps} resetBalanceOnRenewal={false} />)
+
+  it('disables rollover if auto renew is off', () => {
+    render(<SettingsPanel {...mockProps} autoRenew={false} />)
     const rolloverCheckbox = screen.getByLabelText('Include rollover')
     expect(rolloverCheckbox).toBeDisabled()
   })

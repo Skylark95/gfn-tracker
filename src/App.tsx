@@ -63,7 +63,7 @@ const App: React.FC = () => {
     const renewalResult = checkRenewal({
       renewalDate: currentData.renewalDate,
       autoRenew: currentData.autoRenew,
-      resetBalanceOnRenewal: currentData.resetBalanceOnRenewal,
+      resetBalanceOnRenewal: true, // Always reset if auto-renewing
       includeRollover: currentData.includeRollover,
       clearTopUpsOnRenewal: currentData.clearTopUpsOnRenewal,
       balance: currentData.balance,
@@ -88,7 +88,7 @@ const App: React.FC = () => {
   const [purchasedBlocks, setPurchasedBlocks] = useState<number>(initialData.purchasedBlocks)
   const [excludeRollover, setExcludeRollover] = useState<boolean>(initialData.excludeRollover)
   const [autoRenew, setAutoRenew] = useState<boolean>(initialData.autoRenew)
-  const [resetBalanceOnRenewal, setResetBalanceOnRenewal] = useState<boolean>(initialData.resetBalanceOnRenewal)
+
   const [includeRollover, setIncludeRollover] = useState<boolean>(initialData.includeRollover)
   const [clearTopUpsOnRenewal, setClearTopUpsOnRenewal] = useState<boolean>(initialData.clearTopUpsOnRenewal)
 
@@ -122,7 +122,7 @@ const App: React.FC = () => {
       purchasedBlocks,
       excludeRollover,
       autoRenew,
-      resetBalanceOnRenewal,
+
       includeRollover,
       clearTopUpsOnRenewal,
     }
@@ -135,7 +135,7 @@ const App: React.FC = () => {
     purchasedBlocks,
     excludeRollover,
     autoRenew,
-    resetBalanceOnRenewal,
+
     includeRollover,
     clearTopUpsOnRenewal,
   ])
@@ -198,8 +198,7 @@ const App: React.FC = () => {
             onClose={() => setShowSettings(false)}
             autoRenew={autoRenew}
             setAutoRenew={setAutoRenew}
-            resetBalanceOnRenewal={resetBalanceOnRenewal}
-            setResetBalanceOnRenewal={setResetBalanceOnRenewal}
+
             includeRollover={includeRollover}
             setIncludeRollover={setIncludeRollover}
             clearTopUpsOnRenewal={clearTopUpsOnRenewal}

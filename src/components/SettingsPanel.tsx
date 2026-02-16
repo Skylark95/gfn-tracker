@@ -1,5 +1,5 @@
 import React from 'react'
-import { CreditCard, ShoppingCart } from 'lucide-react'
+import { CreditCard, RefreshCw, ShoppingCart } from 'lucide-react'
 import { PLANS, TOP_UP_HOURS } from '../utils/calculations'
 import { BillingCycle, Plan } from '../types'
 
@@ -16,8 +16,7 @@ interface SettingsPanelProps {
   onClose: () => void
   autoRenew: boolean
   setAutoRenew: (val: boolean) => void
-  resetBalanceOnRenewal: boolean
-  setResetBalanceOnRenewal: (val: boolean) => void
+
   includeRollover: boolean
   setIncludeRollover: (val: boolean) => void
   clearTopUpsOnRenewal: boolean
@@ -37,8 +36,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   onClose,
   autoRenew,
   setAutoRenew,
-  resetBalanceOnRenewal,
-  setResetBalanceOnRenewal,
+
   includeRollover,
   setIncludeRollover,
   clearTopUpsOnRenewal,
@@ -112,7 +110,15 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
         {/* Auto Renew Options */}
         <div className="space-y-3 mt-4 pt-4 border-t border-[#333]">
           <label className="flex items-center justify-between group cursor-pointer">
-            <span className="text-sm text-gray-300">Auto renew</span>
+            <div className="flex flex-col">
+              <span className="text-sm text-gray-300 flex items-center gap-2">
+                <RefreshCw size={14} className="text-gray-500" />
+                Auto-reset balance monthly
+              </span>
+              <span className="text-[10px] text-gray-500 ml-6">
+                Resets your 100h allowance every month
+              </span>
+            </div>
             <input
               type="checkbox"
               checked={autoRenew}
@@ -121,24 +127,15 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             />
           </label>
 
-          <label className={`flex items-center justify-between group ${!autoRenew ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
-            <span className="text-sm text-gray-300">Reset balance on renewal</span>
-            <input
-              type="checkbox"
-              checked={resetBalanceOnRenewal}
-              onChange={(e) => setResetBalanceOnRenewal(e.target.checked)}
-              disabled={!autoRenew}
-              className="w-5 h-5 rounded border-gray-600 bg-[#222] text-[#76b900] focus:ring-offset-0 focus:ring-[#76b900]"
-            />
-          </label>
 
-          <label className={`flex items-center justify-between group ${!resetBalanceOnRenewal || !autoRenew ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
+
+          <label className={`flex items-center justify-between group ${!autoRenew ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
             <span className="text-sm text-gray-300">Include rollover</span>
             <input
               type="checkbox"
               checked={includeRollover}
               onChange={(e) => setIncludeRollover(e.target.checked)}
-              disabled={!resetBalanceOnRenewal || !autoRenew}
+              disabled={!autoRenew}
               className="w-5 h-5 rounded border-gray-600 bg-[#222] text-[#76b900] focus:ring-offset-0 focus:ring-[#76b900]"
             />
           </label>
