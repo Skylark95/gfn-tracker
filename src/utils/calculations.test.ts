@@ -37,6 +37,7 @@ describe('Utils', () => {
     it('should calculate basic totals correctly', () => {
       const result = calculateData(
         'performance',
+        'monthly',
         mockBalance,
         '',
         0,
@@ -45,13 +46,14 @@ describe('Utils', () => {
 
       expect(result.totalCurrentHours).toBe(10.5)
       expect(result.planDetails).toEqual(PLANS.performance)
-      expect(result.totalCost).toBe(PLANS.performance.basePrice)
+      expect(result.totalCost).toBe(PLANS.performance.monthlyPrice)
     })
 
     it('should handle rollover exclusion', () => {
        // 10.5 hours - 15 hours rollover = 0 effective (floored at 0)
       const result = calculateData(
         'performance',
+        'monthly',
         mockBalance,
         '',
         0,
@@ -63,6 +65,7 @@ describe('Utils', () => {
       const bigBalance = { hours: 20, minutes: 0 }
       const result2 = calculateData(
         'performance',
+        'monthly',
         bigBalance,
         '',
         0,
@@ -81,6 +84,7 @@ describe('Utils', () => {
 
         const result = calculateData(
             'performance',
+            'monthly',
             { hours: 100, minutes: 0 },
             renewalDate,
             0,
@@ -95,18 +99,32 @@ describe('Utils', () => {
         const blocks = 2
         const result = calculateData(
             'performance',
+            'monthly',
             mockBalance,
             '',
             blocks,
             false
         )
-        const expectedCost = PLANS.performance.basePrice + (blocks * PLANS.performance.topUpPrice)
+        const expectedCost = PLANS.performance.monthlyPrice + (blocks * PLANS.performance.topUpPrice)
         expect(result.totalCost).toBeCloseTo(expectedCost)
+    })
+
+    it('should calculate cost properly for yearly billing', () => {
+        const result = calculateData(
+            'performance',
+            'yearly',
+            mockBalance,
+            '',
+            0,
+            false
+        )
+        expect(result.totalCost).toBe(PLANS.performance.yearlyPrice)
     })
 
     it('should default to performance plan if invalid plan provided', () => {
          const result = calculateData(
             'invalid-plan',
+            'monthly',
             mockBalance,
             '',
             0,

@@ -7,6 +7,8 @@ describe('SettingsPanel', () => {
   const mockProps = {
     plan: 'performance',
     setPlan: mock(),
+    billingCycle: 'monthly' as const,
+    setBillingCycle: mock(),
     renewalDate: '',
     setRenewalDate: mock(),
     purchasedBlocks: 0,
@@ -67,5 +69,12 @@ describe('SettingsPanel', () => {
     render(<SettingsPanel {...mockProps} resetBalanceOnRenewal={false} />)
     const rolloverCheckbox = screen.getByLabelText('Include rollover')
     expect(rolloverCheckbox).toBeDisabled()
+  })
+
+  it('toggles billing cycle', () => {
+    render(<SettingsPanel {...mockProps} />)
+    const yearlyButton = screen.getByText('Yearly')
+    fireEvent.click(yearlyButton)
+    expect(mockProps.setBillingCycle).toHaveBeenCalledWith('yearly')
   })
 })

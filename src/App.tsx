@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import './input.css'
 
-import { Balance, BeforeInstallPromptEvent } from './types'
+import { Balance, BeforeInstallPromptEvent, BillingCycle } from './types'
 import { calculateData } from './utils/calculations'
 import { checkRenewal } from './utils/renewal'
 
@@ -29,6 +29,7 @@ const App: React.FC = () => {
     // Default Values
     const defaults = {
       plan: 'performance',
+      billingCycle: 'monthly' as BillingCycle,
       balance: { hours: 100, minutes: 0 },
       renewalDate: '',
       purchasedBlocks: 0,
@@ -44,6 +45,7 @@ const App: React.FC = () => {
 
     const currentData = {
       plan: (saved.plan as string) ?? defaults.plan,
+      billingCycle: (saved.billingCycle as BillingCycle) ?? defaults.billingCycle,
       balance: {
         hours: savedBalance?.hours ?? defaults.balance.hours,
         minutes: savedBalance?.minutes ?? defaults.balance.minutes,
@@ -80,6 +82,7 @@ const App: React.FC = () => {
   const [initialData] = useState(() => getInitialData())
 
   const [plan, setPlan] = useState<string>(initialData.plan)
+  const [billingCycle, setBillingCycle] = useState<BillingCycle>(initialData.billingCycle)
   const [balance, setBalance] = useState<Balance>(initialData.balance)
   const [renewalDate, setRenewalDate] = useState<string>(initialData.renewalDate)
   const [purchasedBlocks, setPurchasedBlocks] = useState<number>(initialData.purchasedBlocks)
@@ -113,6 +116,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const data = {
       plan,
+      billingCycle,
       balance,
       renewalDate,
       purchasedBlocks,
@@ -125,6 +129,7 @@ const App: React.FC = () => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data))
   }, [
     plan,
+    billingCycle,
     balance,
     renewalDate,
     purchasedBlocks,
@@ -140,12 +145,13 @@ const App: React.FC = () => {
   const calculatedData = useMemo(() => {
     return calculateData(
       plan,
+      billingCycle,
       balance,
       renewalDate,
       purchasedBlocks,
       excludeRollover
     )
-  }, [plan, balance, renewalDate, purchasedBlocks, excludeRollover])
+  }, [plan, billingCycle, balance, renewalDate, purchasedBlocks, excludeRollover])
 
   // --- Helpers ---
 
@@ -182,6 +188,8 @@ const App: React.FC = () => {
           <SettingsPanel
             plan={plan}
             setPlan={setPlan}
+            billingCycle={billingCycle}
+            setBillingCycle={setBillingCycle}
             renewalDate={renewalDate}
             setRenewalDate={setRenewalDate}
             purchasedBlocks={purchasedBlocks}
