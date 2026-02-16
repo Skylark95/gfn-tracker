@@ -20,6 +20,7 @@ describe('Dashboard', () => {
     plan: 'performance',
     renewalDate: '',
     purchasedBlocks: 0,
+    billingCycle: 'monthly' as const,
   }
 
   it('renders daily budget and cost', () => {
@@ -49,5 +50,21 @@ describe('Dashboard', () => {
     fireEvent.change(hoursInput, { target: { value: '20' } })
     // We expect the state setter to be called with a function updater
     expect(mockProps.setBalance).toHaveBeenCalled()
+  })
+  it('renders monthly cost label regardless of billing cycle', () => {
+    // Default mock is monthly
+    const { unmount } = render(<Dashboard {...mockProps} />)
+    expect(screen.getByText('Est. Monthly Cost')).toBeInTheDocument()
+    unmount()
+
+    // Test yearly
+    render(<Dashboard {...mockProps} billingCycle="yearly" />)
+    expect(screen.getByText('Est. Monthly Cost')).toBeInTheDocument()
+  })
+
+  it('calculates monthly cost for yearly plans', () => {
+      render(<Dashboard {...mockProps} billingCycle="yearly" calculatedData={{...mockProps.calculatedData, totalCost: 120}} />)
+      // 120 / 12 = 10
+      expect(screen.getByText('$10.00')).toBeInTheDocument()
   })
 })
