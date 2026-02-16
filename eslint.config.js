@@ -9,7 +9,7 @@ import prettierConfig from "eslint-config-prettier"; // This directly exports th
 
 export default [
   {
-    ignores: ["dist", "eslint.config.js", "vite.config.ts", "sw.js", "postcss.config.js", "tailwind.config.js", "node_modules"],
+    ignores: ["dist", "eslint.config.js", "vite.config.ts", "sw.js", "postcss.config.cjs", "tailwind.config.cjs", "node_modules"],
   },
   js.configs.recommended, // Basic JS recommended rules
   { // This block replaces tseslint.configs.recommended
