@@ -10,6 +10,7 @@ This document provides instructions and context for AI agents working on the cod
 - **Framework:** React
 - **Styling:** Tailwind CSS
 - **Icons:** Lucide Icons (via `lucide-react`)
+- **Dates:** `date-fns`
 - **Language:** TypeScript
 - **Runtime & Test Runner:** Bun
 - **Linting:** ESLint (with TypeScript and React plugins)
@@ -21,6 +22,8 @@ This document provides instructions and context for AI agents working on the cod
 The application is built using Vite, which provides a modern, fast development environment and build process.
 
 - **`index.html`**: The root `index.html` file serves as the main template for the application.
+- **`vite.config.ts`**: Vite configuration.
+- **`sw.js`**: Service worker for PWA support (offline capabilities).
 - **`src/main.tsx`**: This is the main entry point for the React application.
 - **`src/App.tsx`**: This is the main React component.
 - **`src/components/`**: UI components (e.g., `Dashboard`, `SettingsPanel`, `Header`).

@@ -44,7 +44,7 @@ If you are using Visual Studio Code, you can use the provided task to run the de
 
 ## Code Quality
 
-This project uses ESLint for code linting, Prettier for code formatting, and Vitest for testing.
+This project uses ESLint for code linting, Prettier for code formatting, and Bun for testing.
 
 -   **Linting:** To check for code quality issues:
     ```bash
@@ -61,13 +61,13 @@ This project uses ESLint for code linting, Prettier for code formatting, and Vit
 
 ## Technology Stack
 
-- **Bun:** For package management and running scripts.
+- **Bun:** For package management, running scripts, and testing.
 - **Vite:** For the development server and build process.
 - **React:** For the user interface and application logic.
 - **TypeScript:** For type safety and improved developer experience.
 - **Tailwind CSS:** For styling.
 - **Lucide Icons:** For icons.
-- **Vitest:** For unit testing.
+- **date-fns:** For date manipulation.
 - **ESLint:** For code linting and identifying potential issues.
 - **Prettier:** For consistent code formatting.
 
