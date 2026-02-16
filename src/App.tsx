@@ -214,6 +214,7 @@ const App: React.FC = () => {
             setExcludeRollover={setExcludeRollover}
             calculatedData={calculatedData}
             plan={plan}
+            billingCycle={billingCycle}
             renewalDate={renewalDate}
             purchasedBlocks={purchasedBlocks}
           />

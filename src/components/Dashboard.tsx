@@ -6,7 +6,7 @@ import {
   Server,
 } from 'lucide-react'
 import { ROLLOVER_HOURS, formatCurrency, formatHours } from '../utils/calculations'
-import { Balance, Plan } from '../types'
+import { Balance, BillingCycle, Plan } from '../types'
 
 interface DashboardProps {
   balance: Balance
@@ -22,6 +22,7 @@ interface DashboardProps {
     planDetails: Plan
   }
   plan: string
+  billingCycle: BillingCycle
   renewalDate: string
   purchasedBlocks: number
 }
@@ -33,6 +34,7 @@ const Dashboard: React.FC<DashboardProps> = ({
   setExcludeRollover,
   calculatedData,
   plan,
+  billingCycle,
   renewalDate,
   purchasedBlocks,
 }) => {
@@ -147,7 +149,12 @@ const Dashboard: React.FC<DashboardProps> = ({
               Est. Monthly Cost
             </p>
             <p className="text-2xl text-white font-bold mt-1">
-              {formatCurrency(calculatedData.totalCost)}
+              {formatCurrency(
+                billingCycle === 'yearly'
+                  ? calculatedData.planDetails.yearlyPrice / 12 +
+                      purchasedBlocks * calculatedData.planDetails.topUpPrice
+                  : calculatedData.totalCost
+              )}
             </p>
           </div>
         </div>
