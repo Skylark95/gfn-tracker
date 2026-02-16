@@ -62,9 +62,11 @@ describe('Dashboard', () => {
     expect(screen.getByText('Est. Monthly Cost')).toBeInTheDocument()
   })
 
-  it('calculates monthly cost for yearly plans', () => {
-      render(<Dashboard {...mockProps} billingCycle="yearly" calculatedData={{...mockProps.calculatedData, totalCost: 120}} />)
-      // 120 / 12 = 10
-      expect(screen.getByText('$10.00')).toBeInTheDocument()
+  it('calculates monthly cost for yearly plans with top-ups', () => {
+      // Yearly price 99.99 / 12 = 8.3325
+      // 1 Top up = 2.99
+      // Total should be ~11.32
+      render(<Dashboard {...mockProps} billingCycle="yearly" purchasedBlocks={1} />)
+      expect(screen.getByText('$11.32')).toBeInTheDocument()
   })
 })

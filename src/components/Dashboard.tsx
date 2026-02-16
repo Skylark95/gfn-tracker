@@ -151,7 +151,8 @@ const Dashboard: React.FC<DashboardProps> = ({
             <p className="text-2xl text-white font-bold mt-1">
               {formatCurrency(
                 billingCycle === 'yearly'
-                  ? calculatedData.totalCost / 12
+                  ? calculatedData.planDetails.yearlyPrice / 12 +
+                      purchasedBlocks * calculatedData.planDetails.topUpPrice
                   : calculatedData.totalCost
               )}
             </p>
