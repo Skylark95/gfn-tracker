@@ -1,7 +1,10 @@
 // Pricing Constants (based on late 2024/early 2025 data)
+export type BillingCycle = 'monthly' | 'yearly'
+
 export interface Plan {
   name: string
-  basePrice: number
+  monthlyPrice: number
+  yearlyPrice: number
   topUpPrice: number
   color: string
   bg: string

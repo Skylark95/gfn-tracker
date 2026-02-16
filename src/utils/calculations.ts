@@ -1,4 +1,4 @@
-import { Plan, Balance } from '../types'
+import { Plan, Balance, BillingCycle } from '../types'
 
 // Constants
 export const ROLLOVER_HOURS = 15
@@ -8,7 +8,8 @@ export const TOP_UP_HOURS = 15
 export const PLANS: Record<string, Plan> = {
   performance: {
     name: 'Performance',
-    basePrice: 9.99,
+    monthlyPrice: 9.99,
+    yearlyPrice: 99.99,
     topUpPrice: 2.99,
     color: 'text-yellow-400',
     bg: 'bg-yellow-400/10',
@@ -16,7 +17,8 @@ export const PLANS: Record<string, Plan> = {
   },
   ultimate: {
     name: 'Ultimate',
-    basePrice: 19.99,
+    monthlyPrice: 19.99,
+    yearlyPrice: 199.99,
     topUpPrice: 5.99,
     color: 'text-green-500',
     bg: 'bg-green-500/10',
@@ -39,6 +41,7 @@ export const formatHours = (decimalHours: number) => {
 
 export const calculateData = (
   plan: string,
+  billingCycle: BillingCycle,
   balance: Balance,
   renewalDate: string,
   purchasedBlocks: number,
@@ -68,8 +71,9 @@ export const calculateData = (
 
   // Cost Calculation
   const currentPlan = PLANS[plan] || PLANS.performance
-  const totalCost =
-    currentPlan.basePrice + purchasedBlocks * currentPlan.topUpPrice
+  const basePrice =
+    billingCycle === 'yearly' ? currentPlan.yearlyPrice : currentPlan.monthlyPrice
+  const totalCost = basePrice + purchasedBlocks * currentPlan.topUpPrice
 
   return {
     daysRemaining,

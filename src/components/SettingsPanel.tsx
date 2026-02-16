@@ -1,11 +1,13 @@
 import React from 'react'
 import { CreditCard, ShoppingCart } from 'lucide-react'
 import { PLANS, TOP_UP_HOURS } from '../utils/calculations'
-import { Plan } from '../types'
+import { BillingCycle, Plan } from '../types'
 
 interface SettingsPanelProps {
   plan: string
   setPlan: (plan: string) => void
+  billingCycle: BillingCycle
+  setBillingCycle: (cycle: BillingCycle) => void
   renewalDate: string
   setRenewalDate: (date: string) => void
   purchasedBlocks: number
@@ -25,6 +27,8 @@ interface SettingsPanelProps {
 const SettingsPanel: React.FC<SettingsPanelProps> = ({
   plan,
   setPlan,
+  billingCycle,
+  setBillingCycle,
   renewalDate,
   setRenewalDate,
   purchasedBlocks,
@@ -47,6 +51,30 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           <CreditCard size="16" /> Plan Details
         </h2>
 
+        {/* Billing Cycle Toggle */}
+        <div className="flex p-1 bg-[#1a1a1a] rounded-xl border border-[#333] mb-4">
+          <button
+            onClick={() => setBillingCycle('monthly')}
+            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
+              billingCycle === 'monthly'
+                ? 'bg-[#333] text-white shadow-sm'
+                : 'text-gray-500 hover:text-gray-300'
+            }`}
+          >
+            Monthly
+          </button>
+          <button
+            onClick={() => setBillingCycle('yearly')}
+            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
+              billingCycle === 'yearly'
+                ? 'bg-[#333] text-white shadow-sm'
+                : 'text-gray-500 hover:text-gray-300'
+            }`}
+          >
+            Yearly
+          </button>
+        </div>
+
         {/* Plan Selector */}
         <div className="grid grid-cols-2 gap-3 mb-4">
           {Object.keys(PLANS).map((key) => (
@@ -61,7 +89,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             >
               <span className="font-bold">{PLANS[key].name}</span>
               <span className="text-xs opacity-70">
-                ${PLANS[key].basePrice}/mo
+                ${billingCycle === 'yearly' ? PLANS[key].yearlyPrice : PLANS[key].monthlyPrice}
+                /{billingCycle === 'yearly' ? 'yr' : 'mo'}
               </span>
             </button>
           ))}
